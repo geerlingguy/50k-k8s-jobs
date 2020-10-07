@@ -1,0 +1,37 @@
+---
+name: CI
+'on':
+  push:
+    branches:
+      - main
+  pull_request:
+  schedule:
+    - cron: '0 6 * * *'
+
+jobs:
+
+  molecule:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python_version: ['3.7']
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up KinD cluster
+        uses: engineerd/setup-kind@v0.4.0
+
+      - name: Set up Python ${{ matrix.python_version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python_version }}
+
+      - name: Install molecule and openshift dependencies
+        run: pip install ansible molecule[docker] ansible-lint yamllint openshift
+
+      - name: Install collection requirements.
+        run: ansible-galaxy install -r requirements.yml
+
+      - name: Run molecule default test scenario
+        run: molecule test

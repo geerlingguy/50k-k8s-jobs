@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    current_jorb: 0
+    total_count: 30
+    batch_size: 10
+
+  tasks:
+    - name: Create jobs.
+      include_tasks: tasks/create_job.yml
+      with_sequence: 'count={{ (total_count / batch_size) | int }}'
