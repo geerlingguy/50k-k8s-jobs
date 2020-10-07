@@ -1,5 +1,7 @@
 # 50,000 Kubernetes Jobs for 50,000 Subscribers
 
+[![CI](https://github.com/geerlingguy/50k-k8s-jobs/workflows/CI/badge.svg)](https://github.com/geerlingguy/50k-k8s-jobs/actions?query=workflow%3ACI)
+
 I just passed 50,000 subscribers on my YouTube channel, so I thought I'd find a fitting way to celebrate.
 
 For 10,000 subscribers, I ran 10,000 K8s Pods on an Amazon EKS cluster; you can find a video detailing that here: [10,000 Pods for 10k Subscribers](https://www.youtube.com/watch?v=k5ncj3TKL1c).
