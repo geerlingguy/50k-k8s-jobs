@@ -17,6 +17,8 @@ Make sure you have [Ansible](https://docs.ansible.com/ansible/latest/installatio
   1. `ansible-galaxy install -r requirements.yml`
   1. `molecule test`
 
+When you're finished, run `kind delete cluster`.
+
 ## Running on a Production Cluster
 
 TODO.
