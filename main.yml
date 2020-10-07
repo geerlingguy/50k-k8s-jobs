@@ -4,11 +4,17 @@
   gather_facts: false
 
   vars:
-    current_jorb: 0
-    total_count: 30
+    # How many jobs to create in one go.
     batch_size: 10
 
+    # How many jobs to create in total (should be a multiple of batch_size).
+    total_count: 30
+
   tasks:
+    - name: Set current_jorb variable.
+      set_fact:
+        current_jorb: 0
+
     - name: Create jobs.
       include_tasks: tasks/create_job.yml
       with_sequence: 'count={{ (total_count / batch_size) | int }}'
