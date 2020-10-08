@@ -17,7 +17,7 @@ Make sure you have [Ansible](https://docs.ansible.com/ansible/latest/installatio
   1. `kind create cluster`
   1. `pip3 install ansible molecule[docker] yamllint ansible-lint openshift`
   1. `ansible-galaxy install -r requirements.yml`
-  1. `molecule test`
+  1. `molecule converge`
 
 When you're finished, run `kind delete cluster`.
 
