@@ -28,5 +28,5 @@
           - status.successful=1
       register: job_list
       until: (job_list.resources | length) == total_count
-      retries: 200
-      delay: 3
+      retries: 7200  # 10 hours (with 5 second delay)
+      delay: 5
