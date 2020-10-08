@@ -2,26 +2,7 @@
 - name: "Create Jobs {{ current_jorb|int + 1 }}-{{ current_jorb|int + batch_size|int }}."
   community.kubernetes.k8s:
     state: present
-    resource_definition:
-      apiVersion: batch/v1
-      kind: Job
-      metadata:
-        name: '{{ jorb|int + current_jorb|int }}'
-        namespace: default
-      spec:
-        template:
-          metadata:
-            name: '{{ jorb|int + current_jorb|int }}'
-            namespace: default
-          spec:
-            containers:
-            - name: test
-              image: centos:7
-              command: ['bin/bash', '-c', 'echo complete']
-            restartPolicy: Never
-  with_sequence: 'count={{ batch_size }}'
-  loop_control:
-    loop_var: jorb
+    resource_definition: "{{ lookup('template', '../templates/job_batch.yml.j2') | from_yaml_all }}"
 
 - name: Increment current_jorb.
   set_fact:

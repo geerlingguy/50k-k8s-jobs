@@ -1,0 +1,19 @@
+{% for jorb in range(1, batch_size + 1) %}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: '{{ jorb|int + current_jorb|int }}'
+  namespace: default
+spec:
+  template:
+    metadata:
+      name: '{{ jorb|int + current_jorb|int }}'
+      namespace: default
+    spec:
+      containers:
+      - name: test
+        image: centos:7
+        command: ['bin/bash', '-c', 'echo complete']
+      restartPolicy: Never
+{% endfor %}
