@@ -5,10 +5,10 @@
 
   vars:
     # How many jobs to create in one go.
-    batch_size: 10
+    batch_size: 25
 
     # How many jobs to create in total (should be a multiple of batch_size).
-    total_count: 30
+    total_count: 100
 
   tasks:
     - name: Set current_jorb variable.

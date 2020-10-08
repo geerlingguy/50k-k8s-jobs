@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: test
-        image: centos:7
-        command: ['bin/bash', '-c', 'echo complete']
+        image: alpine:3
+        command: ['echo', 'complete']
       restartPolicy: Never
 {% endfor %}
