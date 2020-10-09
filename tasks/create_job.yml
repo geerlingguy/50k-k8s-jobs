@@ -1,6 +1,6 @@
 ---
 - name: "Create Jobs {{ current_jorb|int + 1 }}-{{ current_jorb|int + batch_size|int }}."
-  community.kubernetes.k8s:
+  kubernetes.core.k8s:
     state: present
     resource_definition: "{{ lookup('template', '../templates/job_batch.yml.j2') | from_yaml_all }}"
 

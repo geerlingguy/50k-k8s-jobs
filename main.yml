@@ -20,7 +20,7 @@
       with_sequence: 'count={{ (total_count / batch_size) | int }}'
 
     - name: Wait until there are {{ total_count }} completed jobs.
-      community.kubernetes.k8s_info:
+      kubernetes.core.k8s_info:
         api_version: batch/v1
         kind: Job
         namespace: default
