@@ -42,8 +42,10 @@ Anyways, since I knew I'd build this cluster on Linode, I went ahead and did the
 
 That runs with all the defaults in the playbook. If you want to override them, the easiest way is to run `ansible-playbook` and pass extra variables:
 
-    ansible-playbook main.yml --extra-vars="{'batch_size':25,'total_count':10000}"
+    ansible-playbook main.yml --extra-vars="{'batch_size':500,'total_count':50000}"
 
 Check on how many jobs have completed by monitoring:
 
     kubectl get jobs -l type=50k --field-selector status.successful=1
+
+> **Note**: For efficiency's sake, each batch of jobs is deleted after it successfully runs (otherwise there seems to be hard limit of how many Jobs/Pods will remain present on the cluster, and the scheduler grinds to a halt). If you want to leave all jobs in place, add the extra variable `'inflight_cleanup':true`.

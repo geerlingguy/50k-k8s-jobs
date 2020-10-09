@@ -10,26 +10,14 @@
     # How many jobs to create in total (should be a multiple of batch_size).
     total_count: 100
 
-    # Set this to 'absent' to remove the jobs.
-    job_state: present
+    # Whether to clean up Jobs and Pods in-flight or leave them be.
+    inflight_cleanup: true
 
   tasks:
     - name: Set current_jorb variable.
       set_fact:
         current_jorb: 0
 
-    - name: Create jobs.
-      include_tasks: tasks/create_job.yml
+    - name: Manage jobs.
+      include_tasks: tasks/manage_jobs.yml
       with_sequence: 'count={{ (total_count / batch_size) | int }}'
-
-    - name: Wait until there are {{ total_count }} completed jobs.
-      kubernetes.core.k8s_info:
-        api_version: batch/v1
-        kind: Job
-        namespace: default
-        field_selectors:
-          - status.successful=1
-      register: job_list
-      until: (job_list.resources | length) == total_count
-      retries: 7200  # 10 hours (with 5 second delay)
-      delay: 5

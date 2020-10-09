@@ -1,0 +1,51 @@
+---
+- name: "Create Jobs {{ current_jorb|int + 1 }}-{{ current_jorb|int + batch_size|int }}."
+  kubernetes.core.k8s:
+    state: present
+    resource_definition: "{{ lookup('template', '../templates/job_batch.yml.j2') | from_yaml_all }}"
+
+- name: Wait until {{ batch_size }} jobs are successful.
+  kubernetes.core.k8s_info:
+    api_version: batch/v1
+    kind: Job
+    namespace: default
+    label_selectors:
+      - type=50k
+    field_selectors:
+      - status.successful=1
+  register: job_list
+  until: (job_list.resources | length) >= batch_size|int
+  retries: 1200  # 1 hour (with 3 second delay)
+  delay: 3
+
+- name: Clean up Jobs and orphaned Pods if configured.
+  block:
+
+    - name: "Remove Jobs {{ current_jorb|int + 1 }}-{{ current_jorb|int + batch_size|int }}."
+      kubernetes.core.k8s:
+        state: absent
+        resource_definition: "{{ lookup('template', '../templates/job_batch.yml.j2') | from_yaml_all }}"
+
+    - name: Wait for jobs to be removed.
+      kubernetes.core.k8s_info:
+        api_version: batch/v1
+        kind: Job
+        namespace: default
+        label_selectors:
+          - type=50k
+      register: job_list
+      until: (job_list.resources | length) == 0
+      retries: 1200  # 1 hour (with 3 second delay)
+      delay: 3
+
+    # It's odd, I thought deleting Jobs would clean up associated Pods, but it does
+    # not, at least not with K8s 1.18 on Linode's Kubernetes setup. Also, I couldn't
+    # quickly figure out how to do a label-based deletion using the k8s module.
+    - name: Remove orphaned Pods.
+      command: kubectl delete pods -l type=50k --wait=false
+
+  when: inflight_cleanup
+
+- name: Increment current_jorb.
+  set_fact:
+    current_jorb: "{{ current_jorb|int + batch_size|int }}"
