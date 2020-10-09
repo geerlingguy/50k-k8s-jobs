@@ -10,6 +10,9 @@
     # How many jobs to create in total (should be a multiple of batch_size).
     total_count: 100
 
+    # Set this to 'absent' to remove the jobs.
+    job_state: present
+
   tasks:
     - name: Set current_jorb variable.
       set_fact:

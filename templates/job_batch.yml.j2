@@ -10,6 +10,8 @@ spec:
     metadata:
       name: '{{ jorb|int + current_jorb|int }}'
       namespace: default
+      labels:
+        type: '50k'
     spec:
       containers:
       - name: test

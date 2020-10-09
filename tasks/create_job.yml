@@ -1,7 +1,7 @@
 ---
-- name: "Create Jobs {{ current_jorb|int + 1 }}-{{ current_jorb|int + batch_size|int }}."
+- name: "Process Jobs {{ current_jorb|int + 1 }}-{{ current_jorb|int + batch_size|int }}."
   kubernetes.core.k8s:
-    state: present
+    state: "{{ job_state }}"
     resource_definition: "{{ lookup('template', '../templates/job_batch.yml.j2') | from_yaml_all }}"
 
 - name: Increment current_jorb.
