@@ -10,7 +10,7 @@ So for 50,000, I was doing a few calculations and found that I'd have to pay a f
 
 Instead, I'm building this Ansible playbook to automate the process of running 50,000 individual Jobs on a Kubernetes cluster!
 
-And of course, I made a video detailing the process and thanking my subscribers: [TODO - link to video here]
+And of course, I made a video detailing the process and thanking my subscribers: [TODO - link to video here, and add link to Repository metadata on GitHub]
 
 ## Local Testing
 
