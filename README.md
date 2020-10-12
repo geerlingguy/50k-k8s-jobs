@@ -60,7 +60,7 @@ But you can bypass that 'inflight cleanup' of each batch by setting `inflight_cl
 
     ansible-playbook main.yml --extra-vars="{'batch_size':500,'total_count':50000,'inflight_cleanup':false}"
 
-Note that this configuration is present only for testing, and is not optimized for real-world use (e.g. the playbook won't pause between each batch to wait for the new Jobs to finish deploying). But it does allow you to dump a _LOT_ of Jobs into a cluster, fast, and see how it handles them.
+Note that this configuration has not yet been successfully used to deploy more than 4,000-5,000 Jobs on a single cluster, but it does allow you to dump a _LOT_ of Jobs into a cluster and see how far it can get.
 
 ## Author
 

@@ -4,7 +4,11 @@
     state: present
     resource_definition: "{{ lookup('template', '../templates/job_batch.yml.j2') | from_yaml_all }}"
 
-- name: Wait until {{ batch_size }} jobs are successful.
+- name: Determine how many jobs should be running now.
+  set_fact:
+    batch_target: "{{ batch_size if inflight_cleanup else (current_jorb|int + batch_size|int) }}"
+
+- name: Wait until {{ batch_target }} jobs are successful.
   kubernetes.core.k8s_info:
     api_version: batch/v1
     kind: Job
@@ -14,7 +18,7 @@
     field_selectors:
       - status.successful=1
   register: job_list
-  until: (job_list.resources | length) >= batch_size|int
+  until: (job_list.resources | length) >= batch_target|int
   retries: 1200  # 1 hour (with 3 second delay)
   delay: 3
 
